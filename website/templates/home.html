@@ -1,2 +1,33 @@
-{% extends "base.html" %}{% block title %}Changed{% endblock %}
+{% extends "base.html" %}
+{% block title %}Homepagina{% endblock %}
+{% block content %}
 
+<section class="hero">
+    <h1>Beheer jouw slimme kas, waar je ook bent</h1>
+    <div class="cta">
+    <button class="login" onclick="location.href='/login'">Inloggen</button>
+    <button class="learn">Lees meer</button>
+    </div>
+</section>
+
+<section class="features">
+    <div class="feature">🔧 Automatisch Klimaatbeheer</div>
+    <div class="feature">💧 Waterbeheer</div>
+    <div class="feature">📈 Real-time Monitoring</div>
+    <div class="feature">📱 Mobiele Toegang</div>
+</section>
+
+<section class="benefits">
+    <h2>Waarom kiezen voor ons?</h2>
+    <ul>
+    <li>Tijdbesparend</li>
+    <li>Verhoogde efficiëntie</li>
+    <li>Gemakkelijke installatie</li>
+    </ul>
+</section>
+
+<section class="demo">
+<!-- Placeholder voor demo of screenshot -->
+</section>
+
+{% endblock %}
