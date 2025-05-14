@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Sign-Up{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}">
@@ -10,9 +10,10 @@
 <div class="signup-wrapper">
     <form method="POST">
         <div class="signup-container">
-            <h2>Login</h2>
-            <br />
+            <h2>Sign-Up</h2><br />
+            <p>After signing up, you can link your smart greenhouse using a unique setup key. Don't have a greenhouse yet? Contact us for installation and configuration.</p>
             <div class="form-group">
+                <label for="username"></label>
                 <input
                     type="text"
                     class="form-control"
@@ -23,6 +24,7 @@
             </div><br />
 
             <div class="form-group">
+                <label for="email"></label>
                 <input 
                     type="email" 
                     class="form-control" 
@@ -31,14 +33,26 @@
                     placeholder="Enter email"
                 />
             </div><br />
-
+            
             <div class="form-group">
+                <label for="password1"></label>
                 <input 
                     type="password" 
                     class="form-control" 
-                    id="password" 
-                    name="password" 
+                    id="password1" 
+                    name="password1" 
                     placeholder="Enter password"
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="password2"></label>
+                <input 
+                    type="password" 
+                    class="form-control" 
+                    id="password2" 
+                    name="password2" 
+                    placeholder="Repeat password"
                 />
             </div><br />
 
@@ -47,8 +61,10 @@
                 <label for="rememberme">Remember me</label>
             </div><br/>
 
-            <button type="submit">Login</button>
+            <button type="submit">Sign-Up</button>
         </div>
     </form>
+    <img src="{{ url_for('static', filename='images/greenhouse.png') }}" alt="Right Side Image" class="right-image">
+
 </div>
 {% endblock %}
