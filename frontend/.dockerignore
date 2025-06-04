@@ -1,0 +1,57 @@
+# Docker ignore for frontend (Vite/React project)
+
+# Node.js
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.env
+.env
+.env.*
+!/.env.production
+!/.env.development
+# If you have specific .env files you *want* in the image (uncommon for frontend builds),
+# you can un-ignore them with !, but generally, environment variables are passed
+# into the container at runtime or during build via Docker Compose 'environment' key.
+
+# Build output
+dist
+build
+.vite
+.svelte-kit
+.next
+out
+
+# IDE & OS specific
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+
+# Test files & coverage
+coverage
+src/**/*.test.js
+src/**/*.test.jsx
+src/**/*.test.ts
+src/**/*.test.tsx
+src/**/*.spec.js
+src/**/*.spec.jsx
+src/**/*.spec.ts
+src/**/*.spec.tsx
+
+# Linting & Formatting
+.eslintcache
+.prettierignore
+.prettierrc.json
+.eslintrc.js
+.eslintrc.cjs
+.eslintrc.json
+
+# Git
+.git
+.gitignore
