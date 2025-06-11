@@ -15,7 +15,7 @@ from flask_migrate import Migrate
 
 
 app = create_app()
-migrate = Migrate(app, db) # Initialize Migrate here
+migrate = Migrate(app, db)
 
 
 @app.shell_context_processor

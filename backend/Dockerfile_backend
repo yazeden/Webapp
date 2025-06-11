@@ -1,10 +1,17 @@
-# Webapp/backend/Dockerfile_backend
-
-# Use a Python 3.10 or 3.11 base image
-FROM python:3.10-slim-buster 
+FROM python:3.11-slim-bookworm
 
 WORKDIR /app
+
+RUN apt-get update && apt-get install -y curl --no-install-recommends && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt .
+
 RUN pip install --no-cache-dir -r requirements.txt
+
 COPY . .
+
 EXPOSE 5000
+
+ENV FLASK_APP wsgi.py
+
+CMD ["waitress-serve", "--host=0.0.0.0", "--port=5000", "wsgi:app"]

@@ -1,10 +1,8 @@
-# Webapp/backend/app/models.py
 from datetime import datetime
 from .database import db
 import bcrypt
 
-# --- Models for 'user_auth' database (groeibloei) ---
-# ... (User, AuthToken, Greenhouse models remain the same as before) ...
+# --- models for user_auth ---
 user_greenhouse_association = db.Table(
     'user_greenhouse', 
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
@@ -26,7 +24,6 @@ class User(db.Model):
         lazy=True
     )
     auth_tokens = db.relationship('AuthToken', backref='user', lazy=True)
-    # ... (set_password, check_password, __repr__)
 
     def set_password(self, password):
         self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -45,7 +42,6 @@ class AuthToken(db.Model):
     token = db.Column(db.String(255), unique=True, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     expires_at = db.Column(db.DateTime)
-    # ... (__repr__)
     def __repr__(self):
         return f'<AuthToken {self.token[:10]}...>'
 
@@ -56,16 +52,16 @@ class Greenhouse(db.Model):
     name = db.Column(db.String(50), nullable=False)
     setup_key = db.Column('code', db.String(20), unique=True, nullable=False)
     sensor_readings = db.relationship('SensorData', backref='origin_greenhouse', lazy=True,
-                                      primaryjoin="Greenhouse.id == SensorData.greenhouse_id_direct") # New relationship name
-    # Relationship to its own sensors
-    sensors = db.relationship('Sensor', backref='parent_greenhouse', lazy=True) # New relationship
+                                      primaryjoin="Greenhouse.id == SensorData.greenhouse_id_direct") 
+    # relationship sensors
+    sensors = db.relationship('Sensor', backref='parent_greenhouse', lazy=True) 
 
     # ... (__repr__)
     def __repr__(self):
         return f'<Greenhouse {self.name}>'
 
 
-# --- Models for 'groeibloei' database (formerly greenhouse_data) ---
+# --- greenhouse_data ---
 
 class Plant(db.Model):
     __tablename__ = 'plants'
@@ -79,7 +75,6 @@ class Plant(db.Model):
     ideal_light = db.Column(db.Float, nullable=True)
     sensors = db.relationship('Sensor', backref='plant', lazy=True)
     actuators = db.relationship('Actuator', backref='plant', lazy=True)
-    # ... (__repr__)
     def __repr__(self):
         return f'<Plant {self.name}>'
 
@@ -90,13 +85,9 @@ class Sensor(db.Model):
     type = db.Column(db.String(30), nullable=False) 
     location = db.Column(db.String(50), nullable=False) 
     plants_id = db.Column(db.Integer, db.ForeignKey('plants.id'), nullable=True)
-    
-    # NEW: Foreign Key to Greenhouse
-    # This sensor belongs to a specific greenhouse.
     greenhouse_id = db.Column(db.Integer, db.ForeignKey('greenhouses.id'), nullable=False)
 
     sensor_data = db.relationship('SensorData', backref='sensor', lazy=True)
-    # ... (__repr__)
     def __repr__(self):
         return f'<Sensor {self.type} at {self.location}>'
 
@@ -109,12 +100,8 @@ class SensorData(db.Model):
     sensors_id = db.Column(db.Integer, db.ForeignKey('sensors.id'), nullable=False)
     units_id = db.Column(db.Integer, db.ForeignKey('units.id'), nullable=False)
 
-    # NEW: Direct link to Greenhouse for easier querying of all data for a greenhouse
-    # This is denormalization but can simplify queries significantly.
-    # If you prefer strict normalization, you'd always join through Sensor.
-    greenhouse_id_direct = db.Column(db.Integer, db.ForeignKey('greenhouses.id'), nullable=True) # Nullable if some data isn't directly tied
+    greenhouse_id_direct = db.Column(db.Integer, db.ForeignKey('greenhouses.id'), nullable=True) 
 
-    # ... (__repr__)
     def __repr__(self):
         return f'<SensorData {self.value} for Sensor {self.sensors_id} at {self.timestamp}>'
 
@@ -126,7 +113,7 @@ class Unit(db.Model):
     symbol = db.Column(db.String(10), nullable=False)
     datatype = db.Column(db.String(30), nullable=True)
     sensor_data_items = db.relationship('SensorData', backref='unit', lazy=True)
-    # ... (__repr__)
+
     def __repr__(self):
         return f'<Unit {self.name} ({self.symbol})>'
 
@@ -138,11 +125,10 @@ class Actuator(db.Model):
     location = db.Column(db.String(50), nullable=False)
     plants_id = db.Column(db.Integer, db.ForeignKey('plants.id'), nullable=True)
     
-    # NEW: Foreign Key to Greenhouse
     greenhouse_id = db.Column(db.Integer, db.ForeignKey('greenhouses.id'), nullable=False)
 
     actuators_log = db.relationship('ActuatorLog', backref='actuator', lazy=True)
-    # ... (__repr__)
+
     def __repr__(self):
         return f'<Actuator {self.type} at {self.location}>'
 
@@ -153,6 +139,6 @@ class ActuatorLog(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     action = db.Column(db.String(30), nullable=False)
     actuators_id = db.Column(db.Integer, db.ForeignKey('actuators.id'), nullable=False)
-    # ... (__repr__)
+ 
     def __repr__(self):
         return f'<ActuatorLog {self.action} for Actuator {self.actuators_id} at {self.timestamp}>'
