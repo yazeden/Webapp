@@ -25,23 +25,23 @@ const App = () => {
     return !!localStorage.getItem("jwt_token");
   };
 
-  // --- DEBUGGING LOGS (Optional, remove once everything works) ---
+  // --- debug logs ---
   console.log("--- App.jsx Render ---");
   console.log(`Current Path (from App.jsx render cycle): ${window.location.pathname}`);
   console.log(`Is Authenticated: ${isAuthenticated()}`);
   console.log("----------------------");
-  // --- END DEBUGGING LOGS ---
+  // --- end logs ---
 
   return (
     <div className="min-h-screen flex flex-col">
       <ErrorBoundary>
         <Routes>
-          {/* Main Redirect Logic */}
+          {/* redirect */}
           {isAuthenticated() && (
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
           )}
 
-          {/* Public Routes - Rendered if not already redirected */}
+          {/* public routes */}
           <Route path="/" element={<PublicLayout />}>
             <Route index element={<HeroSection />} />
             <Route path="login" element={<LoginPage />} />
@@ -50,18 +50,15 @@ const App = () => {
             <Route path="about" element={<AboutUsPage />} />
           </Route>
 
-          {/* Authenticated Routes - Protected by ProtectedRoute */}
+          {/* protected routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<DashboardLayout />}>
               <Route path="dashboard" element={<DashboardPage />} />
               <Route path="profile" element={<ProfilePage />} />
-              {/* NEW ROUTE for Greenhouse Details Page */}
-              <Route path="dashboard/greenhouses/:greenhouseId" element={<GreenhouseDetailPage />} /> {/* <-- NEW NESTED ROUTE */}
+              <Route path="dashboard/greenhouses/:greenhouseId" element={<GreenhouseDetailPage />} /> 
             </Route>
           </Route>
 
-          {/* Optional: Fallback for unmatched routes */}
-          {/* <Route path="*" element={<NotFoundPage />} /> */}
         </Routes>
       </ErrorBoundary>
     </div>

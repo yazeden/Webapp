@@ -1,7 +1,7 @@
 // Webapp/frontend/src/pages/SignUpPage.jsx
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Link, useNavigate } from "react-router-dom"; 
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -12,8 +12,8 @@ const SignUpPage = () => {
   });
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // For loading state during API call
-  const navigate = useNavigate(); // Hook for navigation, if needed after signup
+  const [isLoading, setIsLoading] = useState(false); 
+  const navigate = useNavigate(); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,7 +22,6 @@ const SignUpPage = () => {
       [name]: value,
     }));
     if (errors[name] || errors.apiError) {
-      // Clear specific field error and general API error
       setErrors((prevErrors) => ({
         ...prevErrors,
         [name]: null,
@@ -60,23 +59,18 @@ const SignUpPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({}); // Clear previous errors
+    setErrors({}); 
     if (validateForm()) {
       setIsLoading(true);
       try {
-        // Use the VITE_FLASK_API_URL from your .env (passed by Docker Compose)
-        // Fallback for local dev if not in Docker: http://localhost:5000
-        const apiUrl =
-          import.meta.env.VITE_FLASK_API_URL || "http://localhost:5000/api";
-
-        const response = await fetch(`${apiUrl}/auth/register`, {
-          // Assuming your Flask signup endpoint is /api/auth/register
+        const apiUrl = import.meta.env.VITE_FLASK_API_URL || "http://localhost:5000";
+        const response = await fetch(`${apiUrl}/api/auth/register`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name: formData.name, // Or 'username' depending on your backend
+            name: formData.name, 
             email: formData.email,
             password: formData.password,
           }),
@@ -87,17 +81,13 @@ const SignUpPage = () => {
 
         if (response.ok) {
           console.log("Signup successful from backend:", data);
-          setIsSubmitted(true); // Show success message
-          // Optionally, you could automatically log the user in or navigate them
-          // For now, we'll just show the success message and link to login.
-          // setTimeout(() => navigate('/login'), 3000); // Example auto-redirect
+          setIsSubmitted(true); 
         } else {
-          // Handle errors from the backend (e.g., email already exists)
           console.error("Signup failed from backend:", data.message);
           setErrors({
             apiError: data.message || "Signup failed. Please try again.",
           });
-          setIsSubmitted(false); // Keep form visible
+          setIsSubmitted(false); 
         }
       } catch (error) {
         setIsLoading(false);
@@ -106,7 +96,7 @@ const SignUpPage = () => {
           apiError:
             "Network error or server unavailable. Please try again later.",
         });
-        setIsSubmitted(false); // Keep form visible
+        setIsSubmitted(false); 
       }
     } else {
       console.log("Form has validation errors. Please fix them.");
@@ -294,7 +284,7 @@ const SignUpPage = () => {
               </motion.div>
             </div>
 
-            {errors.apiError && ( // Display API errors
+            {errors.apiError && ( 
               <p className="text-red-500 text-sm text-center py-2">
                 {errors.apiError}
               </p>
@@ -303,7 +293,7 @@ const SignUpPage = () => {
             <motion.button
               whileTap={{ scale: 0.95 }}
               type="submit"
-              disabled={isLoading} // Disable button while loading
+              disabled={isLoading} 
               className={`group relative w-full flex justify-center py-3 px-4 border border-transparent 
                          text-md font-bold rounded-full text-white bg-black
                          hover:bg-[#7D7D7D] transition-colors duration-300 focus:outline-none 
@@ -317,7 +307,7 @@ const SignUpPage = () => {
           </form>
         )}
 
-        {/* Link to Login */}
+        {/* link login */}
         <p className="mt-4 text-center text-sm text-gray-600">
           Already have an account?{" "}
           <Link

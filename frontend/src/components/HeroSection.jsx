@@ -6,10 +6,10 @@ const HeroSection = () => {
     <section
       className='min-h-screen bg-[#F5EEDE] flex xl:flex-row flex-col-reverse items-center 
                  justify-center lg:px-24 relative overflow-hidden 
-                 pt-20 sm:pt-24 md:pt-32 xl:pt-0' // Keep general top padding for navbar
+                 pt-20 sm:pt-24 md:pt-32 xl:pt-0' 
     >
-      {/* left side - Text content */}
-      <div className="z-40 xl:mb-0 mb-10 xl:mr-20 text-center xl:text-left px-4 sm:px-6"> {/* Added horizontal padding */}
+      {/* left side - text */}
+      <div className="z-40 xl:mb-0 mb-10 xl:mr-20 text-center xl:text-left px-4 sm:px-6"> 
         <motion.h1
           initial={{ opacity: 0, y: 80 }}
           animate={{ opacity: 1, y: 0 }}
@@ -62,7 +62,7 @@ const HeroSection = () => {
         </motion.p>
       </div>
 
-      {/* right side - Spline Container */}
+      {/* right side - spline */}
       <motion.div // 
         initial={{ opacity: 0, x: 200 }} 
         animate={{ opacity: 1, x: 0 }} 

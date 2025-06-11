@@ -1,7 +1,6 @@
-// Webapp/frontend/src/pages/LoginPage.jsx
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Link, useNavigate } from "react-router-dom"; 
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -11,8 +10,8 @@ const LoginPage = () => {
   });
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // For loading state during API call
-  const navigate = useNavigate(); // Hook for navigation
+  const [isLoading, setIsLoading] = useState(false); 
+  const navigate = useNavigate(); 
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -20,7 +19,7 @@ const LoginPage = () => {
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
     }));
-    if (errors[name] || errors.apiError) { // Clear general API error too
+    if (errors[name] || errors.apiError) { 
       setErrors((prevErrors) => ({
         ...prevErrors,
         [name]: null,
@@ -41,15 +40,12 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({}); // Clear previous errors
+    setErrors({}); 
     if (validateForm()) {
-      setIsLoading(true); // Set loading state
+      setIsLoading(true); 
       try {
-        // Use the VITE_FLASK_API_URL from your .env (passed by Docker Compose)
-        // Fallback for local dev if not in Docker: http://localhost:5000
-        const apiUrl = import.meta.env.VITE_FLASK_API_URL || 'http://localhost:5000/api';
-
-        const response = await fetch(`${apiUrl}/auth/login`, { // Target your Flask login endpoint
+        const apiUrl = import.meta.env.VITE_FLASK_API_URL || 'http://localhost:5000';
+        const response = await fetch(`${apiUrl}/api/auth/login`, { 
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -62,26 +58,23 @@ const LoginPage = () => {
         });
 
         const data = await response.json();
-        setIsLoading(false); // Reset loading state
+        setIsLoading(false); 
 
-        if (response.ok) { // Check if response status is 2xx
+        if (response.ok) { 
           console.log("Login successful from backend:", data);
-          localStorage.setItem('jwt_token', data.token); // Store the JWT token
-          localStorage.setItem('user_id', data.user_id); // Store user_id if returned
-          setIsSubmitted(true); // Now this means actual success
-          // Optionally navigate to a dashboard or home page
-          // setTimeout(() => navigate('/dashboard'), 1500); // Example navigation
+          localStorage.setItem('jwt_token', data.token); 
+          localStorage.setItem('user_id', data.user_id); 
+          console.log("LOGIN SUCCESS! Navigating to /dashboard");
+          navigate("/dashboard");
         } else {
-          // Handle errors from the backend (e.g., invalid credentials)
           console.error("Login failed from backend:", data.message);
           setErrors({ apiError: data.message || "Login failed. Please check your credentials." });
-          setIsSubmitted(false); // Keep form visible
         }
       } catch (error) {
-        setIsLoading(false); // Reset loading state
+        setIsLoading(false); 
         console.error("Network error during login:", error);
         setErrors({ apiError: "Network error or server unavailable. Please try again later." });
-        setIsSubmitted(false); // Keep form visible
+        setIsSubmitted(false); 
       }
     } else {
       console.log("Form has validation errors. Please fix them.");
@@ -119,7 +112,7 @@ const LoginPage = () => {
           <div className="text-center text-green-600 font-bold text-lg">
             Login successful! 👋
             <p className="text-sm text-gray-500 mt-2">
-              Welcome back! {/* You can add a redirect or further actions here */}
+              Welcome back! 
             </p>
           </div>
         ) : (
@@ -191,14 +184,14 @@ const LoginPage = () => {
               </div>
             </div>
             
-            {errors.apiError && ( // Display API errors
+            {errors.apiError && ( 
               <p className="text-red-500 text-sm text-center py-2">{errors.apiError}</p>
             )}
 
             <motion.button
               whileTap={{ scale: 0.95 }}
               type="submit"
-              disabled={isLoading} // Disable button while loading
+              disabled={isLoading} 
               className={`group relative w-full flex justify-center py-3 px-4 border border-transparent 
                          text-md font-bold rounded-full text-white bg-black 
                          hover:bg-[#7D7D7D] transition-colors duration-300 focus:outline-none 

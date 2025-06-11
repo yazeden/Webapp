@@ -12,7 +12,7 @@ const AboutUsPage = () => {
         type: "spring",
         stiffness: 50,
         damping: 15,
-        staggerChildren: 0.2, // Stagger animations for children
+        staggerChildren: 0.2, 
       },
     },
   };
