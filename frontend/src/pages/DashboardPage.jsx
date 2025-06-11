@@ -42,7 +42,7 @@ const DashboardPage = () => {
         navigate("/login");
         return;
       }
-      conosle.log("User object:", user);
+      console.log("User object:", user);
       const response = await fetch(`${apiUrl}/api/user/greenhouses`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
