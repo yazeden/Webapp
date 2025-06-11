@@ -42,6 +42,7 @@ const DashboardPage = () => {
         navigate("/login");
         return;
       }
+      conosle.log("User object:", user);
       const response = await fetch(`${apiUrl}/api/user/greenhouses`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
@@ -72,6 +73,7 @@ const DashboardPage = () => {
       try {
           const token = localStorage.getItem('jwt_token');
           if (!token) { navigate('/login'); return; }
+          console.log("User object:", user);
           const response = await fetch(`${apiUrl}/api/plants/custom_profiles`, {
               headers: { Authorization: `Bearer ${token}` }
           });
