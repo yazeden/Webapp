@@ -1,81 +1,44 @@
-# Webapp/docker-compose.yml
 
-version: '3.8'
-
-# This section is critical if your existing PostgreSQL container ('postgres')
-# was created outside of *this specific* docker-compose.yml file.
-# If it was, you need to tell this compose file to use its network and volume.
-# Let's assume your existing 'postgres' container is on the 'bridge' network (Docker's default)
-# or a specific network it was created with.
-# To be safest, we'll define a custom network for *this* compose file
-# and ensure the new services join it, while we'll assume the 'postgres'
-# container is accessible via its name or IP on the default bridge network.
-# If your 'postgres' container is also managed by *another* docker-compose file,
-# you'll need to know the name of the network created by *that* file.
-# For now, let's proceed assuming default Docker networking.
-
-# Option A: If your existing 'postgres' container is just running standalone on the default bridge network,
-# your services will access it via its container name ('postgres').
-# This docker-compose.yml will implicitly create its own default network.
 
 services:
-  # Flask Backend Service
-  backend:
+  backend: 
     build:
-      context: ./backend
-      dockerfile: Dockerfile_backend # Make sure this file exists in backend/
-    restart: always
-    env_file:
-      - ./.env # This .env must be in the root Webapp/ directory
-    volumes:
-      - ./backend:/app # Mount the backend code into the container (good for live dev)
+      context: ./backend 
+      dockerfile: Dockerfile_backend 
+    container_name: webapp_backend_service 
+    restart: unless-stopped
     ports:
-      - "5000:5000" # Expose Flask app port to the host
-    # Assuming 'postgres' container is available via Docker's default bridge network
-    # or a common network you've manually configured for all your services.
-    # We rely on the `MAIN_DB_URL` and `PI_CONFIG_DB_URL` in .env pointing to `postgres:5432`.
-    depends_on:
-      # We cannot use 'service_healthy' here directly for an external container,
-      # but we can list it for order. Or omit depends_on if DB is always up.
-      # For now, omit to avoid potential startup issues if external.
-      # You rely on your 'postgres' container always being up beforehand.
-      # If you find issues with backend starting before postgres is fully ready,
-      # you might need a custom entrypoint script with a 'wait-for-it' utility.
-      # For now, let's keep it simple.
-      - postgres # This implicitly expects a service named 'postgres' defined here or externally
-
-    command: gunicorn --bind 0.0.0.0:5000 wsgi:app
-
-  # React Frontend Service
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile_frontend # Make sure this file exists in frontend/
-    restart: always
-    # VITE_FLASK_API_URL: points to Flask backend service name and port
+      - "5000:5000" 
     environment:
-      VITE_FLASK_API_URL: http://backend:5000/api 
-    ports:
-      - "80:80" # Expose frontend on standard HTTP port 80 of your Pi
-      - "5173:5173" # Expose Vite dev server port (optional, useful for debugging)
+      DATABASE_URL: ${DATABASE_URL}
+      FLASK_APP: ${FLASK_APP} 
+      SECRET_KEY: ${SECRET_KEY}
+      
+    volumes:
+      - ./backend:/app 
     depends_on:
-      - backend
+      - db 
+    networks:
+      - app-network
 
-  # Reference to your EXISTING PostgreSQL container (named 'postgres')
-  # Docker Compose will not try to build or create this, but allows other services
-  # to define a dependency on it and use its name for networking.
-  # This is essentially a 'dummy' service definition to let Docker Compose know about it.
-  postgres: # <--- This MUST match the name of your existing container
-    image: postgres:16 # <--- This MUST match the image your existing container uses
-    # No build context or dockerfile needed, it's already built/running
-    restart: "no" # Docker Compose should NOT try to restart an externally managed container
-    # Expose necessary ports for internal Docker network communication if they aren't already available
-    # ports: # DO NOT include ports if you don't want to remap or clash with existing ones
-    #   - "5432:5432" # This means host port 5432 -> container port 5432.
-                    # Only add if you want this compose file to manage host port exposure for it.
-                    # Since it's already mapped, usually omit here.
-    # The crucial part is that other services can now refer to it by the service name 'postgres'
-    # on the internal Docker network.
+  db:
+    image: postgres:15-alpine
+    container_name: local_postgres_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_local:/var/lib/postgresql/data
+    networks:
+      - app-network
 
-# No volumes section needed if you are just referencing existing containers
-# and not creating new ones or explicitly mapping their volumes in this compose file.
+volumes:
+  postgres_data_local:
+
+networks:
+  app-network:
+    driver: bridge
