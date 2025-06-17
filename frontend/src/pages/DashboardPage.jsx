@@ -128,10 +128,10 @@ const DashboardPage = () => {
 
   // --- jsx ---
   return (
-    <div className="min-h-screen bg-[#F5EEDE] py-8 px-4 sm:px-6 lg:px-8">
-      {/* dashboard header */}
-      <header className="bg-white shadow-md p-4 mb-8"> 
-        <div className="container mx-auto flex justify-between items-center">
+    <div className="min-h-screen bg-[#F5EEDE]">
+      {/* --- header --- */}
+      <header className="bg-white shadow-md sticky top-0 z-10">
+        <div className="container mx-auto flex justify-between items-center p-4 sm:px-6 lg:px-8">
           <h1 className="text-2xl font-bold text-gray-800">
             GBB Dashboard
           </h1>
@@ -141,7 +141,7 @@ const DashboardPage = () => {
 
       {/* main content */}
       <motion.div
-        className="container mx-auto"
+        className="container mx-auto pt-24 pb-8 px-4 sm:px-6 lg:px-8"
         variants={containerVariants}
         initial="hidden"
         animate="visible"

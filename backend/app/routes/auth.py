@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify, current_app
 from ..models import User, Greenhouse, AuthToken
+from flask_jwt_extended import jwt_required, get_jwt_identity, exceptions
 from ..database import db
 import jwt
 from datetime import datetime, timedelta
@@ -139,3 +140,32 @@ def link_greenhouse_route():
         db.session.rollback()
         current_app.logger.error(f"Error linking greenhouse (user_id: {current_user_id}, gh_id: {greenhouse_to_link.id}): {e}")
         return jsonify({"message": "An error occurred while linking the greenhouse. Please try again."}), 500
+    
+# --- change password ---
+@auth_bp.route('/change-password', methods=['POST'])
+@jwt_required()
+def change_password():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    data = request.get_json()
+    current_password = data.get('currentPassword')
+    new_password = data.get('newPassword')
+
+    if not user.check_password(current_password):
+        return jsonify({"message": "Incorrect current password."}), 403
+
+    if not new_password or len(new_password) < 6:
+        return jsonify({"message": "New password must be at least 6 characters long."}), 400
+
+    user.set_password(new_password)
+    try:
+        db.session.commit()
+        return jsonify({"message": "Password updated successfully."}), 200
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(f"Error changing password for user {current_user_id}: {e}")
+        return jsonify({"message": "An error occurred while updating the password."}), 500

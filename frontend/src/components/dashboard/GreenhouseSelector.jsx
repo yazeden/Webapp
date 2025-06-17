@@ -27,7 +27,7 @@ const GreenhouseSelector = ({
   }
 
   return (
-    <motion.ul n
+    <motion.ul 
       initial="hidden"
       animate="visible"
       variants={{ visible: { transition: { staggerChildren: 0.05 } } }} 

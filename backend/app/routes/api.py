@@ -215,22 +215,29 @@ def create_custom_plant():
     auth_result = handle_jwt_protection()
     if isinstance(auth_result, tuple):
         return auth_result
-    current_user_id = auth_result
-
+    
     data = request.get_json()
     name = data.get('name')
 
     if not name:
         return jsonify({"message": "Plant name is required"}), 400
 
+    def to_float_or_none(value):
+        if value == '' or value is None:
+            return None
+        try:
+            return float(value)
+        except (ValueError, TypeError):
+            return None
+
     new_plant = Plant(
         name=name,
-        ideal_temp_min=data.get('ideal_temp_min'),
-        ideal_temp_max=data.get('ideal_temp_max'),
-        ideal_groundmoisture=data.get('ideal_groundmoisture'),
-        ideal_humidity=data.get('ideal_humidity'),
-        ideal_co2=data.get('ideal_co2'),
-        ideal_light=data.get('ideal_light')
+        ideal_temp_min=to_float_or_none(data.get('ideal_temp_min')),
+        ideal_temp_max=to_float_or_none(data.get('ideal_temp_max')),
+        ideal_groundmoisture=to_float_or_none(data.get('ideal_groundmoisture')),
+        ideal_humidity=to_float_or_none(data.get('ideal_humidity')),
+        ideal_co2=to_float_or_none(data.get('ideal_co2')),
+        ideal_light=to_float_or_none(data.get('ideal_light'))
     )
     db.session.add(new_plant)
     db.session.commit()
@@ -290,3 +297,32 @@ def create_test_greenhouse():
     db.session.add(new_greenhouse)
     db.session.commit()
     return jsonify({"message": "Test greenhouse created (unlinked)", "id": new_greenhouse.id}), 201
+
+# --- delete user profile ---
+@api_bp.route('/user/profile', methods=['GET', 'DELETE', 'OPTIONS']) 
+@jwt_required()
+def manage_user_profile():
+    if is_preflight_request():
+        return jsonify({"message": "Preflight OK"}), 200
+
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    if request.method == 'GET':
+        return jsonify({
+            "username": user.username,
+            "email": user.email
+        }), 200
+
+    if request.method == 'DELETE':
+        try:
+            db.session.delete(user)
+            db.session.commit()
+            return jsonify({"message": "Account successfully deleted."}), 200
+        except Exception as e:
+            db.session.rollback()
+            current_app.logger.error(f"Error deleting user {current_user_id}: {e}")
+            return jsonify({"message": "An error occurred while deleting the account."}), 500
