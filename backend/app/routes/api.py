@@ -116,6 +116,7 @@ def receive_pi_data():
 @api_bp.route('/user/greenhouses', methods=['GET', 'OPTIONS'])
 @jwt_required(optional=True) 
 def get_user_greenhouses():
+    current_app.logger.info(f"Authorization Header: {request.headers.get('Authorization')}")
     if is_preflight_request():
         return jsonify({"message": "Preflight OK"}), 200 
 
@@ -126,7 +127,9 @@ def get_user_greenhouses():
     current_user_id = auth_result
 
     user = User.query.get(current_user_id)
+    current_app.logger.info(f"User Object: {user}")
     if not user:
+        current_app.logger.error(f"User not found for ID: {current_user_id}")
         return jsonify({"message": "User not found"}), 404
 
     greenhouses_data = []
@@ -173,6 +176,7 @@ def unlink_user_greenhouse(greenhouse_id):
 @api_bp.route('/plants/custom_profiles', methods=['GET', 'OPTIONS'])
 @jwt_required(optional=True)
 def get_custom_plant_profiles():
+    current_app.logger.info(f"Authorization Header: {request.headers.get('Authorization')}")
     if is_preflight_request():
         return jsonify({"message": "Preflight OK"}), 200
 
@@ -182,6 +186,9 @@ def get_custom_plant_profiles():
     current_user_id = auth_result
 
     plant_profiles = Plant.query.all()
+    current_app.logger.info(f"Plant Profiles: {plant_profiles}")
+    if not plant_profiles:
+        return jsonify({"message": "No custom plant profiles found"}), 404
 
     profiles_data = []
     for pp in plant_profiles:

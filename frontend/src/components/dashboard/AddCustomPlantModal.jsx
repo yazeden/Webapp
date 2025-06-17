@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const AddCustomPlantModal = ({ isOpen, onClose, onPlantAdded }) => {
   const [plantData, setPlantData] = useState({
@@ -18,10 +18,20 @@ const AddCustomPlantModal = ({ isOpen, onClose, onPlantAdded }) => {
   const apiUrl = import.meta.env.VITE_FLASK_API_URL || 'http://localhost:5000'; 
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setPlantData((prev) => ({ ...prev, [name]: value === "" ? null : Number(value) }));
-  };
+  const { name, value } = e.target;
 
+  const processedValue =
+    name === 'name'
+      ? value
+      : value === ''
+      ? null
+      : Number(value);
+
+  setPlantData((prev) => ({
+    ...prev,
+    [name]: processedValue,
+  }));
+};
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");

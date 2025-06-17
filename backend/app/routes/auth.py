@@ -67,7 +67,7 @@ def login():
 
     expires_delta = timedelta(days=7) if remember_me else timedelta(hours=1)
     payload = {
-        'sub': user.id,
+        'sub': str(user.id),
         'iat': datetime.utcnow(),
         'exp': datetime.utcnow() + expires_delta,
     }
