@@ -7,7 +7,7 @@ const HeroSection = () => {
 
   return (
     <section
-      className='min-h-screen xl:h-screen bg-[#F5EEDE] flex xl:flex-row flex-col-reverse items-center
+      className='min-h-screen bg-[#F5EEDE] flex xl:flex-row flex-col-reverse items-center
                  justify-center lg:px-24 relative overflow-x-hidden
                  pt-20 sm:pt-24 md:pt-32 xl:pt-0'
     >
@@ -108,7 +108,7 @@ const HeroSection = () => {
                    lg:w-[60vw] lg:max-w-[700px]
                    xl:w-1/2 xl:max-w-none
 
-                   h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px] xl:h-screen
+                   h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px] xl:h-[600px]
 
                    flex items-center justify-center mx-auto
                    overflow-hidden z-30 mb-8 xl:mb-0"
