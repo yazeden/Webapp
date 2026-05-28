@@ -8,7 +8,7 @@ const PublicLayout = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow bg-blue-100">
+      <main className="flex-grow">
         <Outlet /> 
       </main>
       <Footer />

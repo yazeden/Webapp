@@ -172,7 +172,7 @@ const Header = () => {
         </div>
 
         {/* mobile menu button */}
-        <div className='md:hidden flex item-center'>
+        <div className='lg:hidden flex items-center'>
           <motion.button
           whileTap={{ scale: 0.7 }}
           onClick={toggleMenu}
