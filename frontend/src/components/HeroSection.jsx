@@ -9,7 +9,7 @@ const HeroSection = () => {
     <section
       className='min-h-screen bg-[#F5EEDE] flex lg:flex-row flex-col-reverse items-center
                  justify-center px-8 lg:px-24 relative overflow-x-hidden
-                 pt-20 sm:pt-24 md:pt-28 lg:pt-0'
+                 pt-20 sm:pt-24 md:pt-28 lg:pt-24'
     >
       {/* left side - text */}
       <div className="z-40 lg:mb-0 mb-10 lg:mr-20 lg:flex-1 text-center lg:text-left px-4 sm:px-6">
@@ -23,7 +23,7 @@ const HeroSection = () => {
             delay: 0.4,
             duration: 1.2,
           }}
-          className="text-5xl md:text-7xl font-bold z-10 mb-6"
+          className="text-4xl sm:text-5xl lg:text-6xl font-bold z-10 mb-4"
         >
           GBB's Smart Greenhouse
         </motion.h1>
@@ -37,7 +37,7 @@ const HeroSection = () => {
             delay: 0.6,
             duration: 1.2,
           }}
-          className="text-4xl md:text-5xl font-bold z-10 mb-6"
+          className="text-2xl sm:text-3xl lg:text-4xl font-bold z-10 mb-4"
         >
           Where Technology Meets Nature
         </motion.h2>
@@ -51,7 +51,7 @@ const HeroSection = () => {
             delay: 0.8,
             duration: 1.2,
           }}
-          className="text-xl md:text-2xl text-[#7D7D7D] max-w-2xl mx-auto lg:mx-0 mb-10"
+          className="text-base sm:text-lg text-[#7D7D7D] max-w-xl mx-auto lg:mx-0 mb-8"
         >
           At GBB, we believe in sustainable innovation. Our smart greenhouse
           system is designed to help you monitor and optimize plant growth
