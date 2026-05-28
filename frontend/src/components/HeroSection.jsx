@@ -15,7 +15,7 @@ const HeroSection = () => {
         initial={{ opacity: 0, y: 60 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 40, damping: 25, delay: 0.3, duration: 1.2 }}
-        className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-8 text-center lg:text-left"
+        className="text-[7.5vw] sm:text-5xl lg:text-7xl font-bold mb-8 text-center lg:text-left"
       >
         GBB's Smart Greenhouse
       </motion.h1>
@@ -77,7 +77,7 @@ const HeroSection = () => {
           transition={{ type: "spring", stiffness: 40, damping: 15, delay: 0.2, duration: 1.5 }}
           className="order-1 lg:order-2
                      relative w-full lg:w-1/2
-                     h-[360px] sm:h-[420px] md:h-[480px] lg:h-[520px]
+                     h-[480px] sm:h-[540px] md:h-[580px] lg:h-[520px]
                      overflow-hidden z-30"
         >
           <Spline
