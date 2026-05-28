@@ -92,7 +92,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5EEDE] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#F5EEDE] flex items-center justify-center pt-24 md:pt-28 pb-12 px-4 sm:px-6 lg:px-8">
       <motion.div
         variants={formVariant}
         initial="hidden"
