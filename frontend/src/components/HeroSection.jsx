@@ -7,12 +7,12 @@ const HeroSection = () => {
 
   return (
     <section
-      className='min-h-screen bg-[#F5EEDE] flex xl:flex-row flex-col-reverse items-center
-                 justify-center lg:px-24 relative overflow-x-hidden
-                 pt-20 sm:pt-24 md:pt-32 xl:pt-0'
+      className='min-h-screen bg-[#F5EEDE] flex lg:flex-row flex-col-reverse items-center
+                 justify-center px-8 lg:px-24 relative overflow-x-hidden
+                 pt-20 sm:pt-24 md:pt-28 lg:pt-0'
     >
       {/* left side - text */}
-      <div className="z-40 xl:mb-0 mb-10 xl:mr-20 xl:flex-1 text-center xl:text-left px-4 sm:px-6">
+      <div className="z-40 lg:mb-0 mb-10 lg:mr-20 lg:flex-1 text-center lg:text-left px-4 sm:px-6">
         <motion.h1
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
@@ -23,7 +23,7 @@ const HeroSection = () => {
             delay: 0.4,
             duration: 1.2,
           }}
-          className="text-5xl md:text-7xl lg:text-7xl font-bold z-10 mb-6"
+          className="text-5xl md:text-7xl font-bold z-10 mb-6"
         >
           GBB's Smart Greenhouse
         </motion.h1>
@@ -37,7 +37,7 @@ const HeroSection = () => {
             delay: 0.6,
             duration: 1.2,
           }}
-          className="text-4xl md:text-5xl lg:text-5xl font-bold z-10 mb-6"
+          className="text-4xl md:text-5xl font-bold z-10 mb-6"
         >
           Where Technology Meets Nature
         </motion.h2>
@@ -51,7 +51,7 @@ const HeroSection = () => {
             delay: 0.8,
             duration: 1.2,
           }}
-          className="text-xl md:text-2xl text-[#7D7D7D] max-w-2xl mx-auto xl:mx-0 mb-10"
+          className="text-xl md:text-2xl text-[#7D7D7D] max-w-2xl mx-auto lg:mx-0 mb-10"
         >
           At GBB, we believe in sustainable innovation. Our smart greenhouse
           system is designed to help you monitor and optimize plant growth
@@ -73,7 +73,7 @@ const HeroSection = () => {
             delay: 1.0,
             duration: 1.2,
           }}
-          className="flex flex-col sm:flex-row gap-4 justify-center xl:justify-start"
+          className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
         >
           <button
             onClick={() => navigate('/signup')}
@@ -103,18 +103,17 @@ const HeroSection = () => {
         }}
         className="relative
                    w-[90vw] max-w-[450px]
-                   sm:w-[80vw] sm:max-w-[500px]
-                   md:w-[70vw] md:max-w-[600px]
-                   lg:w-[60vw] lg:max-w-[700px]
-                   xl:w-1/2 xl:max-w-none
+                   sm:w-[80vw] sm:max-w-[550px]
+                   md:w-[70vw] md:max-w-[650px]
+                   lg:w-1/2 lg:max-w-none
 
-                   h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px] xl:h-[600px]
+                   h-[320px] sm:h-[380px] md:h-[450px] lg:h-[620px]
 
                    flex items-center justify-center mx-auto
-                   overflow-hidden z-30 mb-8 xl:mb-0"
+                   overflow-hidden z-30 mb-8 lg:mb-0"
       >
         <Spline
-          className="absolute inset-0 w-full h-full object-contain"
+          className="absolute inset-0 w-full h-full"
           scene="https://prod.spline.design/2f4b9FmBHkViaE1M/scene.splinecode"
         />
       </motion.div>
