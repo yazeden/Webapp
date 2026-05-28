@@ -102,14 +102,12 @@ const HeroSection = () => {
           duration: 1.5,
         }}
         className="relative
-                   w-[90vw] max-w-[450px]
-                   sm:w-[80vw] sm:max-w-[550px]
-                   md:w-[70vw] md:max-w-[650px]
+                   w-full
                    lg:w-1/2 lg:max-w-none
 
-                   h-[320px] sm:h-[380px] md:h-[450px] lg:h-[620px]
+                   h-[360px] sm:h-[420px] md:h-[480px] lg:h-[620px]
 
-                   flex items-center justify-center mx-auto
+                   flex items-center justify-center
                    overflow-hidden z-30 mb-8 lg:mb-0"
       >
         <Spline
